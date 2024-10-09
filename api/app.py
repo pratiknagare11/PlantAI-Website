@@ -106,16 +106,30 @@ def about():
     return render_template("About.html")
 
 
+import os
+from flask import request, render_template
+
 @app.route('/result', methods=['GET', 'POST'])
 def result():
     if request.method == 'POST':
+        # Get the image from the request
         image = request.files['image']
 
+        # Ensure the upload directory exists
+        upload_folder = 'static/uploads'
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+
+        # Get the filename and save the image
         filename = image.filename
-        file_path = os.path.join('static/uploads', filename)
+        file_path = os.path.join(upload_folder, filename)
         image.save(file_path)
-        print(file_path)
+        print(f"Image saved at: {file_path}")
+
+        # Run the prediction
         pred = prediction(file_path)
+
+        # Retrieve the corresponding information
         title = disease_info['disease_name'][pred]
         description = disease_info['description'][pred]
         prevent = disease_info['Possible Steps'][pred]
@@ -123,9 +137,37 @@ def result():
         supplement_name = supplement_info['supplement name'][pred]
         supplement_image_url = supplement_info['supplement image'][pred]
         supplement_buy_link = supplement_info['buy link'][pred]
-        return render_template('Result.html', title=title, desc=description, prevent=prevent,
-                                image_url = image_url, pred=pred, sname=supplement_name, simage=supplement_image_url,
+
+        # Render the result template with the prediction details
+        return render_template('Result.html',
+                               title=title,
+                               desc=description,
+                               prevent=prevent,
+                               image_url=image_url,
+                               pred=pred,
+                               sname=supplement_name,
+                               simage=supplement_image_url,
                                buy_link=supplement_buy_link)
+# @app.route('/result', methods=['GET', 'POST'])
+# def result():
+#     if request.method == 'POST':
+#         image = request.files['image']
+
+#         filename = image.filename
+#         file_path = os.path.join('static/uploads', filename)
+#         image.save(file_path)
+#         print(file_path)
+#         pred = prediction(file_path)
+#         title = disease_info['disease_name'][pred]
+#         description = disease_info['description'][pred]
+#         prevent = disease_info['Possible Steps'][pred]
+#         image_url = disease_info['image_url'][pred]
+#         supplement_name = supplement_info['supplement name'][pred]
+#         supplement_image_url = supplement_info['supplement image'][pred]
+#         supplement_buy_link = supplement_info['buy link'][pred]
+#         return render_template('Result.html', title=title, desc=description, prevent=prevent,
+#                                 image_url = image_url, pred=pred, sname=supplement_name, simage=supplement_image_url,
+#                                buy_link=supplement_buy_link)
 
 
 
