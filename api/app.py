@@ -10,8 +10,12 @@ import pandas as pd
 from tensorflow.keras.utils import img_to_array, load_img
 from keras.applications.vgg19 import  preprocess_input
 
-supplement_info = pd.read_csv("supplement_info_1.csv", encoding='cp1252')
-disease_info = pd.read_csv("disease_info_final.csv" , encoding='cp1252')
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+supplement_info = pd.read_csv(os.path.join(BASE_DIR, 'supplement_info_1.csv'), encoding='cp1252')
+disease_info = pd.read_csv(os.path.join(BASE_DIR, 'disease_info_final.csv'), encoding='cp1252')
+# supplement_info = pd.read_csv("supplement_info_1.csv", encoding='cp1252')
+# disease_info = pd.read_csv("disease_info_final.csv" , encoding='cp1252')
 
 def prediction(path):
     img = load_img(path, target_size=(256, 256))
@@ -122,5 +126,5 @@ def result():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    app.run(host='127.0.0.1', port=5500)
+    # app.run(host='127.0.0.1', port=5500)
 
