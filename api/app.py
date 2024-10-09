@@ -28,7 +28,12 @@ def prediction(path):
 app = Flask(__name__, template_folder='template', static_folder='static')
 
 endpoint = "http://localhost:8509/v1/models/potatoes_model:predict"
-model = tf.keras.models.load_model("../final_models/8")
+
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, '../final_models/8')
+model = tf.keras.models.load_model(model_path)
+# model = tf.keras.models.load_model("../final_models/8")
 
 CLASS_NAMES = ['Apple___Apple_scab',
  'Apple___Black_rot',
