@@ -10,7 +10,7 @@ import pandas as pd
 from tensorflow.keras.utils import img_to_array, load_img
 from keras.applications.vgg19 import  preprocess_input
 
-supplement_info = pd.read_csv('supplement_info_1.csv', encoding='cp1252')
+supplement_info = pd.read_csv("supplement_info_1.csv", encoding='cp1252')
 disease_info = pd.read_csv("disease_info_final.csv" , encoding='cp1252')
 
 def prediction(path):
